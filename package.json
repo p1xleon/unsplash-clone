@@ -1,7 +1,7 @@
 {
   "name": "unsplash-clone",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -9,10 +9,16 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.24.0",
+    "@reduxjs/toolkit": "^2.5.1",
     "expo": "~52.0.37",
+    "expo-image": "~2.0.6",
+    "expo-router": "~4.0.17",
     "expo-status-bar": "~2.0.1",
+    "firebase": "^11.3.1",
     "react": "18.3.1",
-    "react-native": "0.76.7"
+    "react-native": "0.76.7",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
