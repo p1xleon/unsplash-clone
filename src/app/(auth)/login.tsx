@@ -1,14 +1,27 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 
 import { Link } from "expo-router";
 import { ThemedText } from "../../components/ui/ThemedText";
 import Button from "../../components/ui/Button";
 import TxtIpnut from "../../components/ui/TxtIpnut";
+import { useDispatch } from "react-redux";
+import { logIn } from "../../services/auth/firebase";
+import { setUser } from "../../store/slices/authSlice";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const dispatch = useDispatch();
+
+  const handleLogin = async () => {
+    try {
+      const user = await logIn(email, password);
+      dispatch(setUser(user));
+    } catch (error: any) {
+      Alert.alert("Something went wrong", error.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -24,11 +37,11 @@ const Login = () => {
       <ThemedText style={styles.title}>OR</ThemedText>
 
       <View>
-        <TxtIpnut label="Email"></TxtIpnut>
-        <TxtIpnut label="Password"></TxtIpnut>
+        <TxtIpnut label="Email" value="email" onChangeText={setEmail} />
+        <TxtIpnut label="Password" value="password" onChangeText={setPassword} />
       </View>
 
-      <Button title="Login" color={"#000"} />
+      <Button title="Login" color={"#000"} onPress={handleLogin} />
 
       <View style={styles.footer}>
         <ThemedText>

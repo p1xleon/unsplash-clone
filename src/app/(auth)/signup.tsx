@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ImageBackground, Button } from "react-native";
+import { View, Text, StyleSheet, ImageBackground, Alert, ScrollView } from "react-native";
 import { ThemedText } from "../../components/ui/ThemedText";
 import TxtIpnut from "../../components/ui/TxtIpnut";
 import { Link } from "expo-router";
+import { useDispatch } from "react-redux";
+import { signUp } from "../../services/auth/firebase";
+import { setUser } from "../../store/slices/authSlice";
+import Button from "../../components/ui/Button";
 
 
 const SignUp = () => {
@@ -12,8 +16,19 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
+
+  const handleSignUp = async () => {
+    try {
+      const user = await signUp(email, password);
+      dispatch(setUser(user));
+    } catch (error: any) {
+      Alert.alert('Something went wrong while signin up', error.message)
+    }
+  }
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <ImageBackground source={{ uri: "https://picsum.photos/1920" }} style={styles.header}>
         <View style={styles.overlay} />
         <ThemedText type="title" style={styles.headerText}>
@@ -40,9 +55,9 @@ const SignUp = () => {
           <TxtIpnut label="Password (min. 8 char)" onChangeText={setPassword} />
         </View>
 
-        <Button title="Join" color="#000" />
+        <Button title="Join" color="#000" onPress={handleSignUp} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -52,10 +67,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingBottom: 10
   },
   header: {
     width: "100%",
-    height: 220,
+    height: 180,
     justifyContent: "center",
   },
   overlay: {
@@ -69,7 +85,7 @@ const styles = StyleSheet.create({
     filter: "grayscale(100%)",
   },
   titleContainer: {
-    marginVertical: 35,
+    marginVertical: 25,
     alignItems: "center",
   },
   form: {
