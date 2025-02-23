@@ -17,7 +17,7 @@
 
 **Clone the repository**
 
-`git clone https://github.com/yourusername/unsplash-clone.git`
+`git clone https://github.com/p1xleon/unsplash-clone.git`
 `cd unsplash-clone`
 
 Install dependencies
@@ -28,7 +28,7 @@ Install dependencies
 
 *Create a .env file in the root directory and add your API keys:*
 
-`EXPO_PUBLIC_UNSPLASH_ACCESS_KEY=your_unsplash_access_key`
+`UNSPLASH_ACCESS_KEY=your_unsplash_access_key`
 
 `FIREBASE_API_KEY=your_firebase_api_key`
 
@@ -51,6 +51,8 @@ Install dependencies
 *Add infinite scrolling for images*
 *Implement user profile and saved collections*
 *Improve UI animations and transitions*
+
+**The Unsplash API in demo mode only allows 50 requests per hour, limiting use cases with demo mode**
 
 License
 This project is for demonstration purposes and is not intended for commercial use.
