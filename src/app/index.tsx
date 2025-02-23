@@ -1,24 +1,11 @@
-import { StyleSheet, ScrollView } from "react-native";
-import Header from "../components/Header";
-import ImageCard from "../components/ImageCard";
+import { Redirect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
-export default function App() {
+export default function Index() {
   return (
-    <ScrollView style={styles.container}>
+    <>
       <StatusBar style="auto" />
-      <Header />
-      {/* <SignupScreen /> */}
-      {/* <Login /> */}
-      <ImageCard />
-      {/* <Photo /> */}
-    </ScrollView>
+      <Redirect href="/home" />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});
