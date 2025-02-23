@@ -8,12 +8,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBbeEVkjezDIbUCfCRoc_u5hLrnhvvDc2c",
-  authDomain: "xero-clash.firebaseapp.com",
-  projectId: "xero-clash",
-  storageBucket: "xero-clash.firebasestorage.app",
-  messagingSenderId: "232129300628",
-  appId: "1:232129300628:web:3685d00a472f393680cc81",
+  apiKey: process.env.FIRBASE_API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
 };
 
 // Initialize Firebase
@@ -22,4 +22,4 @@ export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
 });
 export const db = getFirestore(app);
-console.log("Firebase app initialized:", app.name);
+// console.log("Firebase app initialized:", app.name);
