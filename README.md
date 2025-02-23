@@ -49,7 +49,7 @@
 
 ### Future Improvements
 *Add infinite scrolling for images*  
-*Implement user profile and saved collections*  
+*Implement user collections*  
 *Improve UI animations and transitions*  
 
 ### Note:
