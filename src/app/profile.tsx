@@ -89,6 +89,7 @@ const Profile = () => {
           <FlatList
             data={photos}
             keyExtractor={(item) => item.id}
+            initialNumToRender={3}
             renderItem={({ item }) => (
               <ImageCard
                 displayName={currentUser ? item.userName : (displayName as string)}

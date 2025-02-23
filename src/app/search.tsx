@@ -66,6 +66,7 @@ const Search = () => {
               userName={item.user.username}
             />
           )}
+          initialNumToRender={3}
         />
       )}
     </View>

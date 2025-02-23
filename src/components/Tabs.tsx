@@ -40,6 +40,7 @@ const Tabs = () => {
         <FlatList
           data={categories}
           horizontal
+          initialNumToRender={3}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
