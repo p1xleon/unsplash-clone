@@ -1,16 +1,18 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { ReactNode } from "react";
 import { ThemedText } from "./ThemedText";
 
 interface ButtonProps {
-  title: string;
+  title: string | ReactNode;
   iconName?: string;
   color: string;
+  onPress?: () => void;
+  disabled?: boolean
 }
 
-const Button = ({ title, iconName, color }: ButtonProps) => {
+const Button = ({ title, iconName, color, onPress, disabled }: ButtonProps) => {
   return (
-    <TouchableOpacity style={[styles.container, { backgroundColor: color }]}>
+    <TouchableOpacity style={[styles.container, { backgroundColor: color }]} onPress={onPress}>
       <ThemedText style={styles.title}>{title}</ThemedText>
     </TouchableOpacity>
   );

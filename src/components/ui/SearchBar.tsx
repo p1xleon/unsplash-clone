@@ -1,13 +1,17 @@
 import React from "react";
-import { TextInput, View, StyleSheet } from "react-native";
+import { TextInput, View, StyleSheet, Pressable } from "react-native";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import { router } from "expo-router";
+import { ThemedText } from "./ThemedText";
 
 const SearchBar = () => {
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={() => router.push("/search")}>
       <Icon name="magnify" size={24} color="gray" style={styles.icon} />
-      <TextInput placeholder="Search images" placeholderTextColor="gray" style={styles.input} />
-    </View>
+      <ThemedText type="secondarySemiBold" style={styles.bar}>
+        Search
+      </ThemedText>
+    </Pressable>
   );
 };
 
@@ -26,8 +30,7 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 8,
   },
-  input: {
-    fontSize: 16,
-    color: "#000000",
+  bar: {
+    padding: 8,
   },
 });

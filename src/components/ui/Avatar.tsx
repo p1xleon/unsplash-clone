@@ -19,7 +19,7 @@ export default Avatar;
 
 const styles = StyleSheet.create({
   avatar: {
-    borderRadius: 25,
+    borderRadius: 500,
     marginRight: 10,
   },
 });

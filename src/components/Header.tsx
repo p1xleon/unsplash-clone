@@ -1,18 +1,27 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity, StatusBar } from "react-native";
 import SearchBar from "./ui/SearchBar";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import Sidebar from "./Sidebar";
+import Menu from "./Menu";
+import UserMenu from "./UserMenu";
+import { router } from "expo-router";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const Header = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+  
   const [menuVisible, setMenuVisible] = useState(false);
+  const [userMenuVisible, setUserMenuVisible] = useState(false);
   return (
     <View style={styles.container}>
       {/* Logo */}
-      <Image
-        source={{ uri: "https://cdn-icons-png.flaticon.com/128/5968/5968749.png" }}
-        style={styles.logo}
-      />
+      <TouchableOpacity onPress={() => router.push("/home")}>
+        <Image
+          source={{ uri: "https://cdn-icons-png.flaticon.com/128/5968/5968749.png" }}
+          style={styles.logo}
+        />
+      </TouchableOpacity>
 
       {/* Search BAr */}
       <View style={styles.searcContainer}>
@@ -20,11 +29,14 @@ const Header = () => {
       </View>
 
       {/* Account and menu */}
-      <Icon name="account-circle" size={44} color="#d8d8d8" style={styles.icon} />
+      <TouchableOpacity onPress={() => setUserMenuVisible(true)}>
+        <Icon name="account-circle" size={44} color="#d8d8d8" style={styles.icon} />
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => setMenuVisible(true)}>
         <Icon name="menu" size={30} color="#303030" />
       </TouchableOpacity>
-      <Sidebar visible={menuVisible} onClose={() => setMenuVisible(false)} />
+      <Menu visible={menuVisible} onClose={() => setMenuVisible(false)} />
+      <UserMenu visible={userMenuVisible} onClose={() => setUserMenuVisible(false)} />
     </View>
   );
 };
@@ -35,9 +47,11 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     backgroundColor: "#fff",
-    marginBottom: 40,
+    marginBottom: 25,
+    paddingTop: 10,
+    marginTop: StatusBar.currentHeight,
   },
   logo: {
     width: 30,
