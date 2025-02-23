@@ -1,49 +1,134 @@
-import { StyleSheet, Image, View } from "react-native";
-import React from "react";
+import {
+  StyleSheet,
+  Image,
+  View,
+  ScrollView,
+  FlatList,
+  Linking,
+  Alert,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import PhotoActions from "../components/PhotoActions";
 import Uploader from "../components/ui/Uploader";
 import IconButton from "../components/ui/IconButton";
 import { ThemedText } from "../components/ui/ThemedText";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import Tag from "../components/ui/Tag";
+import { router, useLocalSearchParams } from "expo-router";
+import Header from "../components/Header";
+import { fetchPhotoDetails } from "../services/api/unsplash/unsplash";
+import Loader from "../components/ui/Loader";
 
 const Photo = () => {
+  // const { imageUrl, avatar, username, displayName } = useLocalSearchParams(); //get image details from router params, no need to fetch from api
+  const { photoId } = useLocalSearchParams(); //fetch id from router params, needs to fetch photo from api
+  const [photoDetails, setPhotoDetails] = useState<UnsplashImage>();
+  useEffect(() => {
+    const loadPhotoDetails = async () => {
+      if (!photoId) return;
+      const data = await fetchPhotoDetails(photoId as string);
+      setPhotoDetails(data);
+    };
+    loadPhotoDetails();
+  }, [photoId]);
+
+  const handleShare = async () => {
+    try {
+      await Linking.openURL(photoDetails?.links.html || "");
+    } catch (error) {
+      console.log("Error downloading image", error);
+      Alert.alert("Could not share image", "Please try again later");
+    }
+  };
+
+  if (!photoDetails) return <Loader />;
+
+  const photo: LikedPhoto = {
+    id: photoDetails.id,
+    url: photoDetails.urls.regular,
+    userName: photoDetails.user.username,
+    userAvatar: photoDetails.user.profile_image.medium,
+  };
+
   return (
-      <View style={styles.container}>
-        <Uploader avatar="https://picsum.photos/536/354" username="p1xle" />
-        <View>
-          <PhotoActions />
-          <Image
-            source={{
-              uri: "https://plus.unsplash.com/premium_photo-1730839241989-d60cdef3fcba?w=1200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyfHx8ZW58MHx8fHx8",
-            }}
-            style={styles.image}
-          />
-        </View>
+    <ScrollView style={styles.container}>
+      <Header />
+      <Uploader
+        avatar={photoDetails.user.profile_image.medium}
+        username={photoDetails.user.name}
+        onPress={() =>
+          router.push({
+            pathname: "/profile",
+            params: {
+              userName: photoDetails.user.username,
+              userAvatar: photoDetails.user.profile_image.medium,
+              displayName: photoDetails.user.name,
+            },
+          })
+        }
+      />
+      <View>
+        <PhotoActions photo={photo} donwloadUrl={photoDetails.links.download} />
+        <Image
+          source={{
+            uri: photoDetails.urls.raw,
+          }}
+          style={styles.image}
+        />
+      </View>
+      <View style={styles.padding}>
         <View style={styles.iconsContainer}>
-          <IconButton iconName="share" />
+          <IconButton iconName="share" onPress={handleShare} />
           <IconButton iconName="dots-horizontal" />
         </View>
+        {photoDetails.downloads && (
+          <View>
+            <ThemedText>Downloads</ThemedText>
+            <ThemedText type="defaultSemiBold">{photoDetails.downloads}</ThemedText>
+          </View>
+        )}
+        {photoDetails.description ? <ThemedText style={styles.verticalMargin}>{photoDetails.description}</ThemedText> : null}
         <View style={styles.photoDetails}>
           <View>
             <View style={styles.photoDetails}>
               <Icon name="calendar-blank-outline" style={styles.infoIcon} />
-              <ThemedText>Published on November 12, 2024</ThemedText>
+              <ThemedText>
+                Published on {new Date(photoDetails.created_at).toDateString() || ""}
+              </ThemedText>
             </View>
             <View style={styles.photoDetails}>
-              <Icon name="shield-check-outline" style={styles.infoIcon} />
-              <ThemedText>Licensed under Unsplash+ Licence</ThemedText>
+              <Icon name="map-marker-outline" style={styles.infoIcon} />
+              <ThemedText>
+                {photoDetails.location.city || ""} {photoDetails.location.country || ""}
+              </ThemedText>
             </View>
           </View>
         </View>
         <View style={styles.tagsContainer}>
-          <Tag name="Render" />
-          <Tag name="Colorful" />
+          {photoDetails.tags.map((tag) => (
+            <Tag key={tag.title} name={tag.title} />
+          ))}
         </View>
-        <View style={styles.related}>
-            <ThemedText type="subtitle">Related Images</ThemedText>
+        <View style={styles.verticalMargin}>
+          <ThemedText type="subtitle">Related Images</ThemedText>
         </View>
+        <FlatList
+          data={photoDetails.related_collections?.results}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.relatedContainer}>
+              {item.cover_photo?.urls?.regular && (
+                <Image
+                  source={{ uri: item.cover_photo.urls.regular }}
+                  style={styles.relatedImage}
+                />
+              )}
+            </View>
+          )}
+          scrollEnabled={false}
+        />
       </View>
+    </ScrollView>
   );
 };
 
@@ -51,7 +136,7 @@ export default Photo;
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 50,
+    backgroundColor: "#fff",
   },
   image: {
     width: "100%",
@@ -60,14 +145,15 @@ const styles = StyleSheet.create({
   iconsContainer: {
     marginTop: 15,
     marginBottom: 30,
-    paddingHorizontal: 15,
     flexDirection: "row",
     gap: 10,
   },
   photoDetails: {
     flexDirection: "row",
-    paddingHorizontal: 7,
     marginBottom: 5,
+  },
+  padding: {
+    paddingHorizontal: 15,
   },
   infoIcon: {
     fontSize: 22,
@@ -78,10 +164,18 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     flexDirection: "row",
     gap: 10,
-    paddingHorizontal: 15,
+    flexWrap: "wrap",
   },
-  related: {
+  verticalMargin: {
     marginVertical: 20,
-    paddingHorizontal: 15
-  }
+  },
+  relatedContainer: {
+    width: "100%",
+    aspectRatio: 1,
+    marginBottom: 10,
+  },
+  relatedImage: {
+    width: "100%",
+    height: "100%",
+  },
 });
