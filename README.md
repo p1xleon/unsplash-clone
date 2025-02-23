@@ -1,26 +1,26 @@
-**Unsplash Clone**
+# Unsplash Clone
 
 **An Unsplash-style image browsing app built with React Native, Expo, Firebase, and the Unsplash API. This project allows users to explore high-quality images, like photos (if authenticated), and search for images.**
 
-**Tech Stack**
+## Tech Stack
 
-    React Native with Expo (Managed Workflow)
-    TypeScript for type safety
-    Redux Toolkit for state management
-    Firebase Authentication for user login/signup
-    Firestore for storing user data and liked photos
-    Unsplash API for fetching images
-    Axios for API requests
+**React Native with Expo**   
+**TypeScript for type safety**  
+**Redux Toolkit for state management**  
+**Firebase Authentication for user login/signup**  
+**Firestore for storing user data and liked photos**  
+**Unsplash API for fetching images**  
+**Axios for API requests**  
 
 
-**Setup & Installation**
+##Setup & Installation
 
 **Clone the repository**
 
 `git clone https://github.com/p1xleon/unsplash-clone.git`
 `cd unsplash-clone`
 
-Install dependencies
+**Install dependencies**
 
 `npm install`
 
@@ -47,12 +47,13 @@ Install dependencies
 
 `npx expo start`
 
-**Future Improvements**
-*Add infinite scrolling for images*
-*Implement user profile and saved collections*
-*Improve UI animations and transitions*
+### Future Improvements
+*Add infinite scrolling for images*  
+*Implement user profile and saved collections*  
+*Improve UI animations and transitions*  
 
+### Note:
 **The Unsplash API in demo mode only allows 50 requests per hour, limiting use cases with demo mode**
 
-License
+###License
 This project is for demonstration purposes and is not intended for commercial use.
