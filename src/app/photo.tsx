@@ -1,12 +1,4 @@
-import {
-  StyleSheet,
-  Image,
-  View,
-  ScrollView,
-  FlatList,
-  Linking,
-  Alert,
-} from "react-native";
+import { StyleSheet, Image, View, ScrollView, FlatList, Linking, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import PhotoActions from "../components/PhotoActions";
 import Uploader from "../components/ui/Uploader";
@@ -41,7 +33,10 @@ const Photo = () => {
     }
   };
 
-  if (!photoDetails) return <Loader />;
+  if (!photoDetails) return;
+  <View style={styles.loader}>
+    <Loader />
+  </View>;
 
   const photo: LikedPhoto = {
     id: photoDetails.id,
@@ -52,7 +47,9 @@ const Photo = () => {
 
   return (
     <ScrollView style={styles.container}>
+
       <Header />
+
       <Uploader
         avatar={photoDetails.user.profile_image.medium}
         username={photoDetails.user.name}
@@ -67,6 +64,7 @@ const Photo = () => {
           })
         }
       />
+
       <View>
         <PhotoActions photo={photo} donwloadUrl={photoDetails.links.download} />
         <Image
@@ -76,18 +74,23 @@ const Photo = () => {
           style={styles.image}
         />
       </View>
+
       <View style={styles.padding}>
+
         <View style={styles.iconsContainer}>
           <IconButton iconName="share" onPress={handleShare} />
           <IconButton iconName="dots-horizontal" />
         </View>
+
         {photoDetails.downloads && (
           <View>
             <ThemedText>Downloads</ThemedText>
             <ThemedText type="defaultSemiBold">{photoDetails.downloads}</ThemedText>
           </View>
         )}
-        {photoDetails.description ? <ThemedText style={styles.verticalMargin}>{photoDetails.description}</ThemedText> : null}
+        {photoDetails.description ? (
+          <ThemedText style={styles.verticalMargin}>{photoDetails.description}</ThemedText>
+        ) : null}
         <View style={styles.photoDetails}>
           <View>
             <View style={styles.photoDetails}>
@@ -177,5 +180,9 @@ const styles = StyleSheet.create({
   relatedImage: {
     width: "100%",
     height: "100%",
+  },
+  loader: {
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
