@@ -67,6 +67,8 @@ const Search = () => {
             />
           )}
           initialNumToRender={3}
+          maxToRenderPerBatch={5}
+          windowSize={3}
         />
       )}
     </View>

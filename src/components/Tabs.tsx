@@ -40,7 +40,6 @@ const Tabs = () => {
         <FlatList
           data={categories}
           horizontal
-          initialNumToRender={3}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
@@ -51,6 +50,9 @@ const Tabs = () => {
             </Pressable>
           )}
           scrollEnabled={true}
+          initialNumToRender={3}
+          maxToRenderPerBatch={5}
+          windowSize={3}
         />
       </View>
 
