@@ -17,7 +17,7 @@
 
 **Clone the repository**
 
-`git clone https://github.com/p1xleon/unsplash-clone.git`
+`git clone https://github.com/p1xleon/unsplash-clone.git`  
 `cd unsplash-clone`
 
 **Install dependencies**
@@ -46,11 +46,6 @@
 **Start the Expo development server**
 
 `npx expo start`
-
-### Future Improvements
-*Add infinite scrolling for images*  
-*Implement user collections*  
-*Improve UI animations and transitions*  
 
 ### Note:
 **The Unsplash API in demo mode only allows 50 requests per hour, limiting use cases with demo mode**
